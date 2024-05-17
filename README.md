@@ -1,6 +1,6 @@
-# Raspberry PI Rust Project
+# Rust SSH Demo
 
-This is a simple project to learn how to interact with the Raspberry PI through SSH using a Rust application.
+This is a simple project to learn how to interact with the Raspberry PI/VPS through SSH using a Rust application.
 
 ## Available Commands
 
