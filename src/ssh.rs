@@ -2,7 +2,7 @@ use colored::Colorize;
 use ssh2::{Channel, Session};
 use std::{net::TcpStream, path::Path};
 
-use crate::cli::SharedServerArgs;
+use crate::utils::args::SharedServerArgs;
 
 pub fn get_ssh_session(args: SharedServerArgs) -> Session {
     let host = args

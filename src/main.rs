@@ -1,20 +1,16 @@
 use clap::Parser;
-use cli::SharedServerArgs;
 use dotenv::dotenv;
 use std::io::prelude::*;
 
 use crate::cli::{Cli, Command};
 
 mod cli;
-mod handler;
+mod commands;
+mod handlers;
 mod ssh;
+mod utils;
 
 const _VERSION: &str = env!("CARGO_PKG_VERSION");
-
-pub struct ServerCommand {
-    pub command: String,
-    pub server_args: SharedServerArgs,
-}
 
 fn main() {
     dotenv().ok();
@@ -22,9 +18,10 @@ fn main() {
     let cli = Cli::parse();
 
     let server_command = match cli.command {
-        Command::Test(args) => handler::handle_test_command(args),
-        Command::Info(command) => handler::handle_info_command(command),
-        Command::Action(command) => handler::handle_action_command(command),
+        Command::Test(args) => handlers::test::handle(args),
+        Command::Info(command) => handlers::info::handle(command),
+        Command::Action(command) => handlers::action::handle(command),
+        Command::File(command) => handlers::file::handle(command),
     };
 
     let session = ssh::get_ssh_session(server_command.server_args);
