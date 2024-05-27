@@ -13,6 +13,10 @@ pub struct Cli {
     pub host: Option<String>,
     #[arg(long)]
     pub port: Option<u16>,
+    #[arg(long = "public-key")]
+    pub public_key_path: Option<String>,
+    #[arg(long = "private-key")]
+    pub private_key_path: Option<String>,
 }
 
 #[derive(Subcommand, Debug)]

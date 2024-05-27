@@ -22,7 +22,13 @@ fn main() {
 
     let cli = Cli::parse();
 
-    let server = get_server_connection_detail(cli.host, cli.port, cli.user);
+    let server = get_server_connection_detail(
+        cli.host,
+        cli.port,
+        cli.user,
+        cli.public_key_path,
+        cli.private_key_path,
+    );
 
     let server_command = match cli.command {
         Command::Test => handlers::test::handle(),

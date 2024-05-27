@@ -34,10 +34,10 @@ pub fn get_ssh_session(server: Server) -> Session {
     session.set_tcp_stream(tcp_stream);
     session.handshake().unwrap();
 
-    let public_key_path = Path::new(".ssh/id_rsa.pub");
+    let public_key_path = Path::new(server.keys.public_key_path.as_str());
     assert!(public_key_path.exists());
 
-    let private_key_path = Path::new(".ssh/id_rsa");
+    let private_key_path = Path::new(server.keys.private_key_path.as_str());
     assert!(private_key_path.exists());
 
     session
