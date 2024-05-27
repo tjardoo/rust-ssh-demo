@@ -9,8 +9,8 @@ This is a simple project to learn how to interact with the Raspberry PI/VPS thro
 - `info memory`
 - `info partitions`
 - `info temperature`
-- `file upload {}`
-- `file download {}`
+- `file upload {file on local machine} {destination on remote machine}`
+- `file download {file on remote machine} {destination on local machine}`
 - `action reboot`
 - `action shutdown`
 

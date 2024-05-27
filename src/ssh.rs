@@ -2,32 +2,22 @@ use colored::Colorize;
 use ssh2::{Channel, Session};
 use std::{net::TcpStream, path::Path};
 
-use crate::utils::args::SharedServerArgs;
+use crate::utils::args::{get_server_connection_detail, SharedServerArgs};
 
 pub fn get_ssh_session(args: SharedServerArgs) -> Session {
-    let host = args
-        .host
-        .unwrap_or_else(|| std::env::var("HOST").expect("$HOST is not set in `.env` file"));
-
-    let port = args
-        .port
-        .unwrap_or_else(|| std::env::var("PORT").expect("$PORT is not set in `.env` file"));
-
-    let user = args
-        .user
-        .unwrap_or_else(|| std::env::var("USER").expect("$USER is not set in `.env` file"));
+    let server = get_server_connection_detail(args);
 
     println!(
         "{} {}{}{}{}{}",
         "Connecting to:".black(),
-        user.black(),
+        server.user.black(),
         "@".black(),
-        host.black(),
+        server.host.black(),
         ":".black(),
-        port.black()
+        server.port.black()
     );
 
-    let tcp_stream = TcpStream::connect(format!("{}:{}", host, port));
+    let tcp_stream = TcpStream::connect(format!("{}:{}", server.host, server.port));
 
     let tcp_stream = match tcp_stream {
         Ok(tcp_stream) => tcp_stream,
@@ -35,7 +25,7 @@ pub fn get_ssh_session(args: SharedServerArgs) -> Session {
             println!(
                 "{} {}",
                 "Failed to connect to:".black(),
-                host.white().on_red()
+                server.host.white().on_red()
             );
 
             std::process::exit(1);
@@ -53,7 +43,7 @@ pub fn get_ssh_session(args: SharedServerArgs) -> Session {
     assert!(private_key_path.exists());
 
     session
-        .userauth_pubkey_file(&user, Some(public_key_path), private_key_path, None)
+        .userauth_pubkey_file(&server.user, Some(public_key_path), private_key_path, None)
         .unwrap();
 
     session
@@ -64,11 +54,16 @@ pub fn close_channel(mut channel: Channel) {
 
     match channel.exit_status() {
         Ok(status) => {
-            if status == 0 {
+            if status == 1 {
                 println!(
                     "{} {}",
                     "Exit status:".black(),
-                    channel.exit_status().unwrap().to_string().black()
+                    channel
+                        .exit_status()
+                        .unwrap()
+                        .to_string()
+                        .white()
+                        .on_bright_red()
                 );
             } else {
                 println!(

@@ -1,14 +1,17 @@
-use crate::{commands::action::ActionCommand, utils::executer::ServerCommand};
+use crate::{
+    commands::action::ActionCommand,
+    utils::executer::{Location, ServerCommand},
+};
 
 pub fn handle(command: ActionCommand) -> ServerCommand {
-    match command {
-        ActionCommand::Reboot(args) => ServerCommand {
-            command: "sudo reboot".to_string(),
-            server_args: args,
-        },
-        ActionCommand::Shutdown(args) => ServerCommand {
-            command: "sudo shutdown -h now".to_string(),
-            server_args: args,
-        },
+    let (command, server_args) = match command {
+        ActionCommand::Reboot(args) => ("sudo reboot".to_string(), args),
+        ActionCommand::Shutdown(args) => ("sudo shutdown -h now".to_string(), args),
+    };
+
+    ServerCommand {
+        command,
+        server_args,
+        location: Location::Remote,
     }
 }
