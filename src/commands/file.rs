@@ -1,8 +1,6 @@
 use clap::Subcommand;
 
-use crate::utils::args::SharedServerArgs;
-
-#[derive(Subcommand)]
+#[derive(Subcommand, Debug)]
 pub enum FileCommand {
     /// Upload a file to the server
     Upload {
@@ -10,8 +8,6 @@ pub enum FileCommand {
         file: String,
         /// The destination path on the server
         destination: String,
-        #[clap(flatten)]
-        server_args: SharedServerArgs,
     },
     /// Download a file from the server
     Download {
@@ -19,7 +15,5 @@ pub enum FileCommand {
         file: String,
         /// The destination path on the local machine
         destination: String,
-        #[clap(flatten)]
-        server_args: SharedServerArgs,
     },
 }

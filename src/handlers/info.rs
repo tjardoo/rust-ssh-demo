@@ -4,16 +4,19 @@ use crate::{
 };
 
 pub fn handle(command: InfoCommand) -> ServerCommand {
-    let (command, server_args) = match command {
-        InfoCommand::Hardware(args) => ("cat /proc/version".to_string(), args),
-        InfoCommand::Memory(args) => ("cat /proc/meminfo".to_string(), args),
-        InfoCommand::Partitions(args) => ("cat /proc/partitions".to_string(), args),
-        InfoCommand::Temperature(args) => ("vcgencmd measure_temp".to_string(), args),
+    let command = match command {
+        InfoCommand::Hardware => "cat /proc/version".to_string(),
+        InfoCommand::Memory => "cat /proc/meminfo".to_string(),
+        InfoCommand::Cpu => "cat /proc/cpuinfo".to_string(),
+        InfoCommand::Partitions => "cat /proc/partitions".to_string(),
+        InfoCommand::Temperature => "vcgencmd measure_temp".to_string(),
+        InfoCommand::Uptime => "uptime".to_string(),
+        InfoCommand::Version => "uname -a".to_string(),
+        InfoCommand::CurrentDir => "pwd".to_string(),
     };
 
     ServerCommand {
         command,
-        server_args,
         location: Location::Remote,
     }
 }

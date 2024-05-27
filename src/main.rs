@@ -1,7 +1,11 @@
 use clap::Parser;
+use colored::Colorize;
 use dotenv::dotenv;
 use std::io::prelude::*;
-use utils::executer::{Location, ServerCommand};
+use utils::{
+    args::{get_server_connection_detail, Server},
+    executer::{Location, ServerCommand},
+};
 
 use crate::cli::{Cli, Command};
 
@@ -18,20 +22,24 @@ fn main() {
 
     let cli = Cli::parse();
 
+    let server = get_server_connection_detail(cli.host, cli.port, cli.user);
+
     let server_command = match cli.command {
-        Command::Test(args) => handlers::test::handle(args),
+        Command::Test => handlers::test::handle(),
         Command::Info(command) => handlers::info::handle(command),
         Command::Action(command) => handlers::action::handle(command),
-        Command::File(command) => handlers::file::handle(command),
+        Command::File(command) => handlers::file::handle(server.clone(), command),
     };
 
     match server_command.location {
-        Location::Local => run_local_command(server_command),
-        Location::Remote => run_remote_command(server_command),
+        Location::Local => run_local_command(server, server_command),
+        Location::Remote => run_remote_command(server, server_command),
     }
 }
 
-fn run_local_command(server_command: ServerCommand) {
+fn run_local_command(_server: Server, server_command: ServerCommand) {
+    print_command(server_command.command.as_str());
+
     let output = if cfg!(target_os = "windows") {
         std::process::Command::new("cmd")
             .args(["/C", server_command.command.as_str()])
@@ -48,8 +56,10 @@ fn run_local_command(server_command: ServerCommand) {
     println!("{:?}", output);
 }
 
-fn run_remote_command(server_command: ServerCommand) {
-    let session = ssh::get_ssh_session(server_command.server_args);
+fn run_remote_command(server: Server, server_command: ServerCommand) {
+    let session = ssh::get_ssh_session(server);
+
+    print_command(server_command.command.as_str());
 
     let mut channel = session.channel_session().unwrap();
     channel.exec(&server_command.command).unwrap();
@@ -67,4 +77,8 @@ fn run_remote_command(server_command: ServerCommand) {
     println!("{}", result);
 
     ssh::close_channel(channel);
+}
+
+fn print_command(command: &str) {
+    println!("{} {}", "Executing:".black(), command.black(),);
 }

@@ -4,14 +4,13 @@ use crate::{
 };
 
 pub fn handle(command: ActionCommand) -> ServerCommand {
-    let (command, server_args) = match command {
-        ActionCommand::Reboot(args) => ("sudo reboot".to_string(), args),
-        ActionCommand::Shutdown(args) => ("sudo shutdown -h now".to_string(), args),
+    let command = match command {
+        ActionCommand::Reboot => "sudo reboot".to_string(),
+        ActionCommand::Shutdown => "sudo shutdown -h now".to_string(),
     };
 
     ServerCommand {
         command,
-        server_args,
         location: Location::Remote,
     }
 }

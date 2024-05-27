@@ -1,11 +1,9 @@
 use clap::Subcommand;
 
-use crate::utils::args::SharedServerArgs;
-
-#[derive(Subcommand)]
+#[derive(Subcommand, Debug)]
 pub enum ActionCommand {
     /// Reboot the system
-    Reboot(SharedServerArgs),
+    Reboot,
     /// Shutdown the system
-    Shutdown(SharedServerArgs),
+    Shutdown,
 }

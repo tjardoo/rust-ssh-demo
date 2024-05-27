@@ -1,12 +1,8 @@
-use crate::utils::{
-    args::SharedServerArgs,
-    executer::{Location, ServerCommand},
-};
+use crate::utils::executer::{Location, ServerCommand};
 
-pub fn handle(args: SharedServerArgs) -> ServerCommand {
+pub fn handle() -> ServerCommand {
     ServerCommand {
         command: "echo 'Hello, World!'".to_string(),
-        server_args: args,
         location: Location::Remote,
     }
 }

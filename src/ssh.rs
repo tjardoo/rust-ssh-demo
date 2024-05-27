@@ -2,11 +2,9 @@ use colored::Colorize;
 use ssh2::{Channel, Session};
 use std::{net::TcpStream, path::Path};
 
-use crate::utils::args::{get_server_connection_detail, SharedServerArgs};
+use crate::utils::args::Server;
 
-pub fn get_ssh_session(args: SharedServerArgs) -> Session {
-    let server = get_server_connection_detail(args);
-
+pub fn get_ssh_session(server: Server) -> Session {
     println!(
         "{} {}{}{}{}{}",
         "Connecting to:".black(),
@@ -14,7 +12,7 @@ pub fn get_ssh_session(args: SharedServerArgs) -> Session {
         "@".black(),
         server.host.black(),
         ":".black(),
-        server.port.black()
+        server.port.to_string().black(),
     );
 
     let tcp_stream = TcpStream::connect(format!("{}:{}", server.host, server.port));

@@ -1,21 +1,24 @@
 use clap::{Parser, Subcommand};
 
-use crate::{
-    commands::{action::ActionCommand, file::FileCommand, info::InfoCommand},
-    utils::args::SharedServerArgs,
-};
+use crate::commands::{action::ActionCommand, file::FileCommand, info::InfoCommand};
 
-#[derive(Parser)]
+#[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 pub struct Cli {
     #[command(subcommand)]
     pub command: Command,
+    #[arg(long)]
+    pub user: Option<String>,
+    #[arg(long)]
+    pub host: Option<String>,
+    #[arg(long)]
+    pub port: Option<u16>,
 }
 
-#[derive(Subcommand)]
+#[derive(Subcommand, Debug)]
 pub enum Command {
     /// Test connection
-    Test(SharedServerArgs),
+    Test,
     #[clap(subcommand)]
     /// Get system information
     Info(InfoCommand),

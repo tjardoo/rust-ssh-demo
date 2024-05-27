@@ -1,15 +1,21 @@
 use clap::Subcommand;
 
-use crate::utils::args::SharedServerArgs;
-
-#[derive(Subcommand)]
+#[derive(Subcommand, Debug)]
 pub enum InfoCommand {
     /// Get hardware information
-    Hardware(SharedServerArgs),
+    Hardware,
     /// Get memory information
-    Memory(SharedServerArgs),
+    Memory,
     /// Get partition information
-    Partitions(SharedServerArgs),
+    Partitions,
+    /// Get CPU information
+    Cpu,
     /// Get temperature information
-    Temperature(SharedServerArgs),
+    Temperature,
+    /// Get uptime information
+    Uptime,
+    /// Get version information
+    Version,
+    /// Get current directory information
+    CurrentDir,
 }
