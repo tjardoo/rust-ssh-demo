@@ -8,11 +8,11 @@ pub struct Cli {
     #[command(subcommand)]
     pub command: Command,
     #[arg(long)]
-    pub user: Option<String>,
-    #[arg(long)]
     pub host: Option<String>,
     #[arg(long)]
     pub port: Option<u16>,
+    #[arg(long)]
+    pub user: Option<String>,
     #[arg(long = "public-key")]
     pub public_key_path: Option<String>,
     #[arg(long = "private-key")]

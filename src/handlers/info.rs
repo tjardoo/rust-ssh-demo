@@ -1,6 +1,6 @@
 use crate::{
     commands::info::InfoCommand,
-    utils::executer::{Location, ServerCommand},
+    exec::{Location, ServerCommand},
 };
 
 pub fn handle(command: InfoCommand) -> ServerCommand {
@@ -18,5 +18,34 @@ pub fn handle(command: InfoCommand) -> ServerCommand {
     ServerCommand {
         command,
         location: Location::Remote,
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_handle_hardware() {
+        let server_command = handle(InfoCommand::Hardware);
+
+        assert_eq!(server_command.command, "cat /proc/version");
+        assert_eq!(server_command.location, Location::Remote);
+    }
+
+    #[test]
+    fn test_handle_temperature() {
+        let server_command = handle(InfoCommand::Temperature);
+
+        assert_eq!(server_command.command, "vcgencmd measure_temp");
+        assert_eq!(server_command.location, Location::Remote);
+    }
+
+    #[test]
+    fn test_handle_current_dir() {
+        let server_command = handle(InfoCommand::CurrentDir);
+
+        assert_eq!(server_command.command, "pwd");
+        assert_eq!(server_command.location, Location::Remote);
     }
 }
