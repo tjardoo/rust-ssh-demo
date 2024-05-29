@@ -1,10 +1,10 @@
 use colored::Colorize;
-use ssh2::{Channel, Session};
+use ssh2::Session;
 use std::{net::TcpStream, path::Path};
 
 use crate::utils::Server;
 
-pub fn get_ssh_session(server: Server) -> Session {
+pub fn create_ssh_session(server: Server) -> Session {
     println!(
         "{} {}",
         "Connecting to:".black(),
@@ -41,38 +41,4 @@ pub fn get_ssh_session(server: Server) -> Session {
         .unwrap();
 
     session
-}
-
-pub fn close_channel(mut channel: Channel) {
-    channel.wait_close().unwrap();
-
-    match channel.exit_status() {
-        Ok(status) => {
-            if status == 1 {
-                println!(
-                    "{} {}",
-                    "Exit status:".black(),
-                    channel
-                        .exit_status()
-                        .unwrap()
-                        .to_string()
-                        .white()
-                        .on_bright_red()
-                );
-            } else {
-                println!(
-                    "{} {}",
-                    "Exit status:".black(),
-                    channel.exit_status().unwrap().to_string().black()
-                );
-            }
-        }
-        Err(_) => {
-            println!(
-                "{} {}",
-                "Exit status:".black(),
-                "Failed".white().on_bright_red()
-            );
-        }
-    }
 }

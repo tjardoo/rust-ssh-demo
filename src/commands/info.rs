@@ -17,5 +17,5 @@ pub enum InfoCommand {
     /// Get version information
     Version,
     /// Get current directory information
-    CurrentDir,
+    Pwd,
 }

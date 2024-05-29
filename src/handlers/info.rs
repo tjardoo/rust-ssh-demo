@@ -12,7 +12,7 @@ pub fn handle(command: InfoCommand) -> ServerCommand {
         InfoCommand::Temperature => "vcgencmd measure_temp".to_string(),
         InfoCommand::Uptime => "uptime".to_string(),
         InfoCommand::Version => "uname -a".to_string(),
-        InfoCommand::CurrentDir => "pwd".to_string(),
+        InfoCommand::Pwd => "pwd".to_string(),
     };
 
     ServerCommand {
@@ -42,8 +42,8 @@ mod tests {
     }
 
     #[test]
-    fn test_handle_current_dir() {
-        let server_command = handle(InfoCommand::CurrentDir);
+    fn test_handle_pwd() {
+        let server_command = handle(InfoCommand::Pwd);
 
         assert_eq!(server_command.command, "pwd");
         assert_eq!(server_command.location, Location::Remote);
