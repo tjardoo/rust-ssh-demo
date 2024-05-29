@@ -6,7 +6,27 @@ This is a simple project to learn how to interact with the Raspberry PI/VPS thro
 
 Usage: `[OPTIONS] [COMMAND]`
 
+### Test
+
 - `test`
+
+### Action
+
+- `action reboot`
+- `action shutdown`
+
+### Control
+
+- `control update`
+
+### File
+
+- `file upload {file} {destination}`
+- `file download {file} {destination}`
+- `action view {file}`
+
+### Info
+
 - `info hardware`
 - `info memory`
 - `info partitions`
@@ -14,11 +34,12 @@ Usage: `[OPTIONS] [COMMAND]`
 - `info temperature`
 - `info uptime`
 - `info version`
-- `info current-dir`
-- `file upload {file on local machine} {destination on remote machine}`
-- `file download {file on remote machine} {destination on local machine}`
-- `action reboot`
-- `action shutdown`
+- `info pwd`
+- `info du {directory}`
+
+### Install
+
+- `install nginx`
 
 ### Development
 

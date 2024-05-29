@@ -13,6 +13,7 @@ pub fn handle(command: InfoCommand) -> ServerCommand {
         InfoCommand::Uptime => "uptime".to_string(),
         InfoCommand::Version => "uname -a".to_string(),
         InfoCommand::Pwd => "pwd".to_string(),
+        InfoCommand::Du { directory } => format!("du -h --max-depth=1 {}", directory),
     };
 
     ServerCommand {
@@ -46,6 +47,16 @@ mod tests {
         let server_command = handle(InfoCommand::Pwd);
 
         assert_eq!(server_command.command, "pwd");
+        assert_eq!(server_command.location, Location::Remote);
+    }
+
+    #[test]
+    fn test_handle_du() {
+        let server_command = handle(InfoCommand::Du {
+            directory: "/var/log".to_string(),
+        });
+
+        assert_eq!(server_command.command, "du -h --max-depth=1 /var/log");
         assert_eq!(server_command.location, Location::Remote);
     }
 }

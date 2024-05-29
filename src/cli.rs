@@ -2,6 +2,7 @@ use clap::{Parser, Subcommand};
 
 use crate::commands::{
     action::ActionCommand, control::ControlCommand, file::FileCommand, info::InfoCommand,
+    install::InstallCommand,
 };
 
 #[derive(Parser, Debug)]
@@ -37,4 +38,7 @@ pub enum Command {
     /// Perform a system control operation
     #[clap(subcommand)]
     Control(ControlCommand),
+    /// Install a package
+    #[clap(subcommand)]
+    Install(InstallCommand),
 }

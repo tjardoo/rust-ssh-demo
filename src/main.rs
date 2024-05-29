@@ -27,6 +27,7 @@ fn main() {
         Command::Action(command) => handlers::action::handle(command),
         Command::File(command) => handlers::file::handle(server.clone(), command),
         Command::Control(command) => handlers::control::handle(command),
+        Command::Install(command) => handlers::install::handle(command),
     };
 
     match server_command.location {

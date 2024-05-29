@@ -2,7 +2,6 @@
 
 - Monitor remote logs
 - Change command line arguments to be more user friendly
-- Show output of local commands
-- View logs nginx/php-fpm via options
-- Update command
 - Install service command (tbd)
+- Restart service command (tbd)
+- Check if service is installed (`dpkg-query -W -f='${Status}\n' nginx`)

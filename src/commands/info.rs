@@ -18,4 +18,9 @@ pub enum InfoCommand {
     Version,
     /// Get current directory information
     Pwd,
+    /// Get disk usage information for a directory
+    Du {
+        /// The directory to check
+        directory: String,
+    },
 }

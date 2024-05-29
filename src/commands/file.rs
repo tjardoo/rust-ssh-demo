@@ -16,4 +16,9 @@ pub enum FileCommand {
         /// The destination path on the local machine
         destination: String,
     },
+    /// Show contents of a file
+    View {
+        /// The file to show
+        file: String,
+    },
 }
