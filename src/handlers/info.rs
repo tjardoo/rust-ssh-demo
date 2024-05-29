@@ -1,6 +1,6 @@
 use crate::{
     commands::info::InfoCommand,
-    exec::{Location, ServerCommand},
+    utils::{Location, ServerCommand},
 };
 
 pub fn handle(command: InfoCommand) -> ServerCommand {

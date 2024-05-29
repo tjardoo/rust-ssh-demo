@@ -1,7 +1,6 @@
 use crate::{
     commands::file::FileCommand,
-    exec::{Location, ServerCommand},
-    utils::Server,
+    utils::{Location, Server, ServerCommand},
 };
 
 pub fn handle(server: Server, command: FileCommand) -> ServerCommand {

@@ -1,14 +1,14 @@
 use clap::Parser;
 use dotenv::dotenv;
-use exec::{run_local_command, run_remote_command, Location};
-use utils::get_server_information;
+use utils::{get_server_information, Location};
 
 use crate::cli::{Cli, Command};
 
 mod cli;
 mod commands;
-mod exec;
+mod executers;
 mod handlers;
+mod helpers;
 mod ssh;
 mod utils;
 
@@ -26,10 +26,11 @@ fn main() {
         Command::Info(command) => handlers::info::handle(command),
         Command::Action(command) => handlers::action::handle(command),
         Command::File(command) => handlers::file::handle(server.clone(), command),
+        Command::Control(command) => handlers::control::handle(command),
     };
 
     match server_command.location {
-        Location::Local => run_local_command(server, server_command),
-        Location::Remote => run_remote_command(server, server_command),
+        Location::Local => executers::local::run(server, server_command),
+        Location::Remote => executers::remote::run(server, server_command),
     }
 }

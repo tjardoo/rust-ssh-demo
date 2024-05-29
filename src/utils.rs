@@ -10,16 +10,27 @@ pub struct Server {
     pub keys: Keys,
 }
 
-impl Display for Server {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}@{}:{}", self.user, self.host, self.port)
-    }
-}
-
 #[derive(Clone)]
 pub struct Keys {
     pub public_key_path: String,
     pub private_key_path: String,
+}
+
+pub struct ServerCommand {
+    pub command: String,
+    pub location: Location,
+}
+
+#[derive(Debug, PartialEq)]
+pub enum Location {
+    Local,
+    Remote,
+}
+
+impl Display for Server {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}@{}:{}", self.user, self.host, self.port)
+    }
 }
 
 pub fn get_server_information(cli: &Cli) -> Server {

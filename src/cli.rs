@@ -1,6 +1,8 @@
 use clap::{Parser, Subcommand};
 
-use crate::commands::{action::ActionCommand, file::FileCommand, info::InfoCommand};
+use crate::commands::{
+    action::ActionCommand, control::ControlCommand, file::FileCommand, info::InfoCommand,
+};
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -32,4 +34,7 @@ pub enum Command {
     /// Perform a file operation
     #[clap(subcommand)]
     File(FileCommand),
+    /// Perform a system control operation
+    #[clap(subcommand)]
+    Control(ControlCommand),
 }

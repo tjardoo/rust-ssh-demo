@@ -1,6 +1,6 @@
 use crate::{
     commands::action::ActionCommand,
-    exec::{Location, ServerCommand},
+    utils::{Location, ServerCommand},
 };
 
 pub fn handle(command: ActionCommand) -> ServerCommand {

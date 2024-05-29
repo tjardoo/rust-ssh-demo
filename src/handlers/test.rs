@@ -1,4 +1,4 @@
-use crate::exec::{Location, ServerCommand};
+use crate::utils::{Location, ServerCommand};
 
 pub fn handle() -> ServerCommand {
     ServerCommand {
