@@ -6,4 +6,9 @@ pub enum ActionCommand {
     Reboot,
     /// Shutdown the system
     Shutdown,
+    /// Show contents of a file
+    Cat {
+        /// The file to show
+        file: String,
+    },
 }

@@ -21,10 +21,26 @@ pub fn run(server: Server, server_command: ServerCommand) {
         println!("{}", error_result);
     }
 
-    let mut result = String::new();
-    channel.read_to_string(&mut result).unwrap();
+    loop {
+        let mut buffer = [0; 1024];
 
-    println!("{}", result);
+        match channel.read(&mut buffer) {
+            Ok(n) => {
+                if n == 0 {
+                    break;
+                }
+
+                let output = String::from_utf8_lossy(&buffer[..n]);
+
+                print!("{}", output);
+            }
+            Err(error) => {
+                println!("{}", error);
+
+                break;
+            }
+        }
+    }
 
     match channel.wait_close() {
         Ok(_) => print_exit_status(channel.exit_status().unwrap(), None),

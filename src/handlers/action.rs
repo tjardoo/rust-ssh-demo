@@ -7,6 +7,7 @@ pub fn handle(command: ActionCommand) -> ServerCommand {
     let command = match command {
         ActionCommand::Reboot => "sudo reboot".to_string(),
         ActionCommand::Shutdown => "sudo shutdown -h now".to_string(),
+        ActionCommand::Cat { file } => format!("cat {}", file),
     };
 
     ServerCommand {
@@ -32,6 +33,16 @@ mod tests {
         let server_command = handle(ActionCommand::Shutdown);
 
         assert_eq!(server_command.command, "sudo shutdown -h now");
+        assert_eq!(server_command.location, Location::Remote);
+    }
+
+    #[test]
+    fn test_handle_cat() {
+        let server_command = handle(ActionCommand::Cat {
+            file: "/var/log/auth.log".to_string(),
+        });
+
+        assert_eq!(server_command.command, "cat /var/log/auth.log");
         assert_eq!(server_command.location, Location::Remote);
     }
 }
