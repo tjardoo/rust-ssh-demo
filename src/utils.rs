@@ -18,13 +18,7 @@ pub struct Keys {
 
 pub struct ServerCommand {
     pub command: String,
-    pub location: Location,
-}
-
-#[derive(Debug, PartialEq)]
-pub enum Location {
-    Local,
-    Remote,
+    pub print_output: bool,
 }
 
 impl Display for Server {

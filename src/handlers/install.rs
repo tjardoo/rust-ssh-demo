@@ -1,17 +1,20 @@
-use crate::{
-    commands::install::InstallCommand,
-    utils::{Location, ServerCommand},
-};
+use crate::{commands::install::InstallCommand, utils::ServerCommand};
 
-pub fn handle(command: &InstallCommand) -> ServerCommand {
-    let command = match command {
-        InstallCommand::Nginx => "sudo apt install nginx -y".to_string(),
+pub fn handle(command: &InstallCommand) -> Vec<ServerCommand> {
+    let commands = match command {
+        InstallCommand::Nginx => [
+            ("sudo apt install nginx -y".to_string(), false),
+            ("dpkg-query -W -f='${Status}' nginx".to_string(), true),
+        ],
     };
 
-    ServerCommand {
-        command,
-        location: Location::Remote,
-    }
+    commands
+        .iter()
+        .map(|(command, print_output)| ServerCommand {
+            command: command.to_string(),
+            print_output: *print_output,
+        })
+        .collect()
 }
 
 #[cfg(test)]
@@ -20,9 +23,16 @@ mod tests {
 
     #[test]
     fn test_handle_nginx() {
-        let server_command = handle(&InstallCommand::Nginx);
+        let server_commands = handle(&InstallCommand::Nginx);
 
-        assert_eq!(server_command.command, "sudo apt install nginx -y");
-        assert_eq!(server_command.location, Location::Remote);
+        assert_eq!(server_commands.len(), 2);
+        assert_eq!(
+            server_commands.get(0).unwrap().command,
+            "sudo apt install nginx -y"
+        );
+        assert_eq!(
+            server_commands.get(1).unwrap().command,
+            "dpkg-query -W -f='${Status}' nginx"
+        );
     }
 }

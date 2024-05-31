@@ -1,18 +1,15 @@
-use crate::{
-    commands::action::ActionCommand,
-    utils::{Location, ServerCommand},
-};
+use crate::{commands::action::ActionCommand, utils::ServerCommand};
 
-pub fn handle(command: &ActionCommand) -> ServerCommand {
+pub fn handle(command: &ActionCommand) -> Vec<ServerCommand> {
     let command = match command {
         ActionCommand::Reboot => "sudo reboot".to_string(),
         ActionCommand::Shutdown => "sudo shutdown -h now".to_string(),
     };
 
-    ServerCommand {
+    vec![ServerCommand {
         command,
-        location: Location::Remote,
-    }
+        print_output: true,
+    }]
 }
 
 #[cfg(test)]
@@ -21,17 +18,20 @@ mod tests {
 
     #[test]
     fn test_handle_reboot() {
-        let server_command = handle(&ActionCommand::Reboot);
+        let server_commands = handle(&ActionCommand::Reboot);
 
-        assert_eq!(server_command.command, "sudo reboot");
-        assert_eq!(server_command.location, Location::Remote);
+        assert_eq!(server_commands.len(), 1);
+        assert_eq!(server_commands.get(0).unwrap().command, "sudo reboot");
     }
 
     #[test]
     fn test_handle_shutdown() {
-        let server_command = handle(&ActionCommand::Shutdown);
+        let server_commands = handle(&ActionCommand::Shutdown);
 
-        assert_eq!(server_command.command, "sudo shutdown -h now");
-        assert_eq!(server_command.location, Location::Remote);
+        assert_eq!(server_commands.len(), 1);
+        assert_eq!(
+            server_commands.get(0).unwrap().command,
+            "sudo shutdown -h now"
+        );
     }
 }

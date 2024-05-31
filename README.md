@@ -21,8 +21,6 @@ Usage: `[OPTIONS] [COMMAND]`
 
 ### File
 
-- `file upload {file} {destination}`
-- `file download {file} {destination}`
 - `action view {file}`
 
 ### Info
@@ -36,6 +34,7 @@ Usage: `[OPTIONS] [COMMAND]`
 - `info version`
 - `info pwd`
 - `info du {directory}`
+- `info service-installed-check {service}`
 
 ### Install
 

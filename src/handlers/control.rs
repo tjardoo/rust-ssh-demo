@@ -1,17 +1,14 @@
-use crate::{
-    commands::control::ControlCommand,
-    utils::{Location, ServerCommand},
-};
+use crate::{commands::control::ControlCommand, utils::ServerCommand};
 
-pub fn handle(command: &ControlCommand) -> ServerCommand {
+pub fn handle(command: &ControlCommand) -> Vec<ServerCommand> {
     let command = match command {
         ControlCommand::Update => "sudo apt-get update && sudo apt-get -y upgrade".to_string(),
     };
 
-    ServerCommand {
+    vec![ServerCommand {
         command,
-        location: Location::Remote,
-    }
+        print_output: true,
+    }]
 }
 
 #[cfg(test)]
@@ -20,12 +17,12 @@ mod tests {
 
     #[test]
     fn test_handle_update() {
-        let server_command = handle(&ControlCommand::Update);
+        let server_commands = handle(&ControlCommand::Update);
 
+        assert_eq!(server_commands.len(), 1);
         assert_eq!(
-            server_command.command,
+            server_commands.get(0).unwrap().command,
             "sudo apt-get update && sudo apt-get -y upgrade"
         );
-        assert_eq!(server_command.location, Location::Remote);
     }
 }

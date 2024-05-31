@@ -1,10 +1,10 @@
-use crate::utils::{Location, ServerCommand};
+use crate::utils::ServerCommand;
 
-pub fn handle() -> ServerCommand {
-    ServerCommand {
+pub fn handle() -> Vec<ServerCommand> {
+    vec![ServerCommand {
         command: "echo 'Hello, World!'".to_string(),
-        location: Location::Remote,
-    }
+        print_output: true,
+    }]
 }
 
 #[cfg(test)]
@@ -13,9 +13,12 @@ mod tests {
 
     #[test]
     fn test_handle() {
-        let server_command = handle();
+        let server_commands = handle();
 
-        assert_eq!(server_command.command, "echo 'Hello, World!'");
-        assert_eq!(server_command.location, Location::Remote);
+        assert_eq!(server_commands.len(), 1);
+        assert_eq!(
+            server_commands.get(0).unwrap().command,
+            "echo 'Hello, World!'"
+        );
     }
 }
