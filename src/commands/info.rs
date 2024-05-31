@@ -23,4 +23,9 @@ pub enum InfoCommand {
         /// The directory to check
         directory: String,
     },
+    /// Check if a service is installed
+    ServiceInstalledCheck {
+        /// The service to check
+        service: String,
+    },
 }

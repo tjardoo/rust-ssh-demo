@@ -1,9 +1,9 @@
 use crate::{
     helpers::{print_command, print_exit_status},
-    utils::{Server, ServerCommand},
+    utils::ServerCommand,
 };
 
-pub fn run(_server: Server, server_command: ServerCommand) {
+pub fn run(server_command: ServerCommand) {
     print_command(server_command.command.as_str());
 
     let output = if cfg!(target_os = "windows") {

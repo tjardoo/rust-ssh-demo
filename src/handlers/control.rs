@@ -3,7 +3,7 @@ use crate::{
     utils::{Location, ServerCommand},
 };
 
-pub fn handle(command: ControlCommand) -> ServerCommand {
+pub fn handle(command: &ControlCommand) -> ServerCommand {
     let command = match command {
         ControlCommand::Update => "sudo apt-get update && sudo apt-get -y upgrade".to_string(),
     };
@@ -20,7 +20,7 @@ mod tests {
 
     #[test]
     fn test_handle_update() {
-        let server_command = handle(ControlCommand::Update);
+        let server_command = handle(&ControlCommand::Update);
 
         assert_eq!(
             server_command.command,

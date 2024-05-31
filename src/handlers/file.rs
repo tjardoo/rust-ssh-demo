@@ -3,7 +3,7 @@ use crate::{
     utils::{Location, Server, ServerCommand},
 };
 
-pub fn handle(server: Server, command: FileCommand) -> ServerCommand {
+pub fn handle(server: Server, command: &FileCommand) -> ServerCommand {
     let (command, location) = match command {
         FileCommand::Upload { file, destination } => (
             format!(
@@ -45,7 +45,7 @@ mod tests {
 
         let server_command = handle(
             server,
-            FileCommand::Upload {
+            &FileCommand::Upload {
                 file: "test.txt".to_string(),
                 destination: "/home/pi".to_string(),
             },
@@ -72,7 +72,7 @@ mod tests {
 
         let server_command = handle(
             server,
-            FileCommand::Download {
+            &FileCommand::Download {
                 file: "/home/pi/test.txt".to_string(),
                 destination: ".".to_string(),
             },
@@ -99,7 +99,7 @@ mod tests {
 
         let server_command = handle(
             server,
-            FileCommand::View {
+            &FileCommand::View {
                 file: "/var/log/auth.log".to_string(),
             },
         );

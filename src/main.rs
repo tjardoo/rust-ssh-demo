@@ -7,12 +7,16 @@ use crate::cli::{Cli, Command};
 mod cli;
 mod commands;
 mod executers;
+mod formatter;
+mod formatters;
 mod handlers;
 mod helpers;
 mod ssh;
 mod utils;
 
 const _VERSION: &str = env!("CARGO_PKG_VERSION");
+
+type OptionalFormatter = Option<Box<dyn Fn(&str) -> String>>;
 
 fn main() {
     dotenv().ok();
@@ -21,7 +25,7 @@ fn main() {
 
     let server = get_server_information(&cli);
 
-    let server_command = match cli.command {
+    let server_command = match &cli.command {
         Command::Test => handlers::test::handle(),
         Command::Info(command) => handlers::info::handle(command),
         Command::Action(command) => handlers::action::handle(command),
@@ -31,7 +35,7 @@ fn main() {
     };
 
     match server_command.location {
-        Location::Local => executers::local::run(server, server_command),
-        Location::Remote => executers::remote::run(server, server_command),
+        Location::Local => executers::local::run(server_command),
+        Location::Remote => executers::remote::run(server, server_command, &cli.command),
     }
 }
